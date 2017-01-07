@@ -1,0 +1,65 @@
+{% set m = 9 %}
+
+{% set title = 'Ожидают брака' %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="header">
+    <div id="page-header">
+          <h1>Все заявки, ожидающие отбраковки</h1>
+    </div>
+</div>
+
+
+<div id="content">
+
+    {% if data['leads'] %}
+
+    <p class="above-table">{{ data['leads'] | length }} заявок ожидают отбраковки</p>
+
+    <table class="content-tbl">
+    <tr class="content-tbl-header">
+        <td class="fit-content">ID</td>
+        <td class="fit-content">UID</td>
+        <td class="fit-content">Дата</td>
+        <td class="fit-content">Дата браковки</td>
+        <td class="fit-content">Телефон</td>
+        <td class="ellipsis col-name">Имя</td>
+        <td class="ellipsis col-source">URL</td>
+        <td>Причина брака</td>
+    </tr>
+    {% for lead in data['leads'] %}
+    <tr class="order-row">
+        <td class="fit-content"><a href="{{ url_for('show_admin_lead', n=lead['id']) }}">{{ lead['id'] }}</a></td>
+        <td class="fit-content">{% if lead['winner'] %}{{ lead['winner'] }}{% endif %}</td>
+        <td class="fit-content">{{ g.arrow.get(lead['date']).to(g.TZ).format('DD.MM.YYYY HH:mm') }}</td>
+
+        {% if lead['brack_report_date'] %}
+            {% if (lead['brack_report_date'] - g.arrow.get(lead['date'])).days >= 1 %}
+              <td class="fit-content" style="color: red">
+            {% else %}
+              <td class="fit-content">
+            {% endif %}
+            {{ g.arrow.get(lead['brack_report_date']).to(g.TZ).format('DD.MM.YYYY HH:mm') }}</td>
+        {% else %}
+              <td class="fit-content">???</td>
+        {% endif %}
+
+        <td class="fit-content">{{ g.pretty_number(lead['phone']) }}</td>
+        <td class="ellipsis col-name">{{ lead['name'] if lead['name'] != None }}</td>
+        <td class="ellipsis col-source">{{ lead['source'].split('?')[0].split('http://')[-1] }}</td>
+        <td class="ellipsis col-brack">{{ lead['commentbrack'] if lead['commentbrack'] != None }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+
+    {% else %}
+        <p>Нет заявок, ожидающих отбраковки</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+

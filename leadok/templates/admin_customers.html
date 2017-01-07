@@ -1,0 +1,89 @@
+{% set m = 5 %}
+
+{% set title = 'Клиенты' %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="header">
+    <div id="page-header">
+        <h1>Текущая информация о заказчиках</h1>
+    </div>
+</div>
+
+
+<div id="content">
+
+    <table class="ld-table">
+
+        <tr class="ld-table-header">
+            <td>UID</td>
+            <td>Вкл.</td>
+            <td>Баланс</td>
+            <td>Сейчас</td>
+            <td>Надо</td>
+            <td>Часы работы</td>
+            <td>Последняя заявка</td>
+        </tr>
+
+        {% for customer in customers %}
+        {% if customer.uid != 'test' %}
+        <tr class="ld-table-row">
+
+            <td ><a href="{{ url_for('admin_show_customer', uid=customer.uid) }}">
+            {{ customer.uid }}
+            </a></td>
+
+
+            <td align="center">{% if not customer.is_off() %}<span style="font-size: 250%;">•</span>{% endif %}</td>
+
+
+            {% set balance = customer.get_balance() %}
+            {% if balance == 0 %}
+            <td class="number">0</td>
+            {% elif balance < 0 %}
+            <td style="color: red;" class="number">{{ g.pretty_currency(balance, '0.') }}</td>
+            {% else %}
+            <td class="number">{{ g.pretty_currency(balance, '0.') }}</td>
+            {% endif %}
+
+            <td align="center">
+            {% set now = customer.get_now() %}
+            {% if now %}
+                {{ now }}
+            {% else %}
+
+            {% endif %}
+            </td>
+
+
+            <td align="center">
+            {% set req = customer.get_req() %}
+            {% if req %}
+              {{ req }}
+            {% else %}
+
+            {% endif %}
+            </td>
+
+            {% set start, finish = customer.get_working_hours() %}
+            <td align="center">{{ start.format('HH:mm') }} — {{ finish.format('HH:mm') }}</td>
+
+            <td class="number">
+            {% set last_lead_time = customer.get_last_lead_time() %}
+            {% if last_lead_time %}
+            {{ g.arrow.get(last_lead_time).humanize(locale='ru') }}
+            {% else %}
+            —
+            {% endif %}
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+
+    </table>
+
+</div>
+
+{% endblock %}

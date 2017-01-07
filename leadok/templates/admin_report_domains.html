@@ -1,0 +1,53 @@
+{% set m = 773 %}
+
+{% set title = 'Статистика по темам' %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="header">
+    <div id="page-header">
+        <h1>Отчёт: Статистика заявок по темам</h1>
+    </div>
+</div>
+
+
+<div id="content">
+
+    <table class="ld-table">
+
+        <tr class="ld-table-header">
+            <td>Код группы</td>
+            <td>Тематика</td>
+            <td>Регионы</td>
+            <td>Клиентов</td>
+            <td>Заявок</td>
+            <td>Последняя заявка</td>
+        </tr>
+
+        {% for line in data['domains_list'] %}
+
+        <tr class="ld-table-row">
+
+            <td>{{ line['domain'].name }}</td>
+            <td>{{ line['domain'].scope_description }}</td>
+            <td>{{ line['domain'].region_description }}</td>
+            <td class="number">{{ line['customers_count'] }}</td>
+            <td class="number">{{ g.pretty_currency(line['leads_count'], '0.') }}</td>
+            <td class="number">
+            {% if line['last_lead_time'] %}
+            {{ g.arrow.get(line['last_lead_time']).humanize(locale='ru') }}
+            {% else %}
+            —
+            {% endif %}
+            </td>
+
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+{% endblock %}

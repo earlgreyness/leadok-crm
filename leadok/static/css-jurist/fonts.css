@@ -1,0 +1,45 @@
+@font-face {
+	font-family: 'RobotoLight';
+	src: url('../fonts-jurist/RobotoLight/RobotoLight.eot');
+	src: url('../fonts-jurist/RobotoLight/RobotoLight.eot?#iefix') format('embedded-opentype'),
+	url('../fonts-jurist/RobotoLight/RobotoLight.woff') format('woff'),
+	url('../fonts-jurist/RobotoLight/RobotoLight.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'RobotoSlab';
+	src: url('../fonts-jurist/RobotoSlabRegular/RobotoSlabRegular.eot');
+	src: url('../fonts-jurist/RobotoSlabRegular/RobotoSlabRegular.eot?#iefix') format('embedded-opentype'),
+	url('../fonts-jurist/RobotoSlabRegular/RobotoSlabRegular.woff') format('woff'),
+	url('../fonts-jurist/RobotoSlabRegular/RobotoSlabRegular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'RobotoSlab';
+	src: url('../fonts-jurist/RobotoSlabBold/RobotoSlabBold.eot');
+	src: url('../fonts-jurist/RobotoSlabBold/RobotoSlabBold.eot?#iefix') format('embedded-opentype'),
+	url('../fonts-jurist/RobotoSlabBold/RobotoSlabBold.woff') format('woff'),
+	url('../fonts-jurist/RobotoSlabBold/RobotoSlabBold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Roboto';
+	src: url('../fonts-jurist/RobotoBold/RobotoBold.eot');
+	src: url('../fonts-jurist/RobotoBold/RobotoBold.eot?#iefix') format('embedded-opentype'),
+	url('../fonts-jurist/RobotoBold/RobotoBold.woff') format('woff'),
+	url('../fonts-jurist/RobotoBold/RobotoBold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Roboto';
+	src: url('../fonts-jurist/RobotoRegular/RobotoRegular.eot');
+	src: url('../fonts-jurist/RobotoRegular/RobotoRegular.eot?#iefix') format('embedded-opentype'),
+	url('../fonts-jurist/RobotoRegular/RobotoRegular.woff') format('woff'),
+	url('../fonts-jurist/RobotoRegular/RobotoRegular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}

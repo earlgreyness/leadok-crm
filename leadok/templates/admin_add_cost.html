@@ -1,0 +1,82 @@
+{% set m = 7 %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div id="header">
+    <div id="page-header">
+        <h1>Добавление статьи расходов</h1>
+    </div>
+</div>
+
+
+<div id="content">
+
+<div class="leadok-content">
+
+    <form method="post">
+        <table class="leadok-form-table">
+
+
+
+
+
+
+        <tr>
+          <td>Дата:</td>
+          <td>
+            <input class="leadok-input-text" type="text" name="date" value="{{ g.time_now.format('DD.MM.YYYY') }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td>Сумма (руб.):</td>
+          <td>
+            <input class="leadok-input-text" type="text" name="amount" value="0">
+          </td>
+        </tr>
+
+
+
+
+        <tr>
+          <td>Вид издержки:</td>
+          <td>
+
+            <input id="id-google" class="leadok-radio" type="radio" name="name" value="Google AdWords" checked>
+            <label for="id-google" class="leadok-radio-label">Google AdWords</label><br>
+
+            <input id="id-giga" class="leadok-radio" type="radio" name="name" value="giga" >
+            <label for="id-giga" class="leadok-radio-label">Георгий Цеквава</label><br>
+
+            <input id="id-wilstream" class="leadok-radio" type="radio" name="name" value="WILStream" >
+            <label for="id-wilstream" class="leadok-radio-label">WILStream</label><br>
+
+          </td>
+        </tr>
+
+
+
+        <tr>
+          <td><button type="submit" class="leadok-button" name="submit">Добавить</button></td>
+          <td>
+          </td>
+        </tr>
+
+
+
+
+
+
+        </table>
+
+    </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

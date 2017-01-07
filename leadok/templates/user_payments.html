@@ -1,0 +1,123 @@
+{% set m = 6 %}
+
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+
+<div id="header">
+    <div id="page-header">
+        <h1>Платежи — {{ g.MONTHS[info['month']] }} {{ info['year'] }}</h1>
+    </div>
+
+    <div id="filter-pay">
+        <div id="filter-pay-left">
+            <form method="get">
+            <table class="filter-pay">
+                <tr>
+                    <td class="col-1">Период:</td>
+                    <td>
+                        <select name="month" class="select-status">
+                            {% for month in g.MONTHS %}
+                            <option  {% if month == info['month'] %}selected="selected"{% endif %} value="{{ month }}">{{ g.MONTHS[month] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="col-2">&nbsp;</td>
+                    <td>
+                        <select name="year" class="select-status">
+                            {% for year in g.YEARS %}
+                            <option {% if year == info['year'] %}selected="selected"{% endif %} value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="col-2">&nbsp;</td>
+                    <td><input class="submit-filter-pay" type="submit" name="submit" value="Показать"></td>
+                </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="content">
+    <p style="margin-bottom: 20px;">
+        Реквизиты для перевода денег:<br>
+        Карта Сбербанка : 63900207 9013622318<br>
+        Держатель : Сергей Маркилов<br>
+    </p>
+
+
+
+    <form method="post" class="customer-add-payment-form">
+        Дата:<br>
+        <input type="text" name="date" class="input-date date-from" id="paycalendar" value="{{ g.time_now.to(g.TZ).format('DD.MM.YYYY') }}">
+        <br>
+        Время:<br>
+        <input id="addform" type="text" name="time" value="{{ g.arrow.now(g.TZ).format('HH:mm') }}">
+        <br>
+        Сумма:<br>
+        <input id="addform" type="number" name="sum" value="">
+        <br>
+        Способ оплаты:<br>
+        <select id="comment-select" class="select-status" name="comment">
+            <option value="Яндекс.Деньги">Яндекс.Деньги</option>
+            <option value="Сбербанк">Сбербанк</option>
+            <option value="Наличные">Наличные</option>
+        </select>
+        <br>
+
+        <br>
+        <input class="styled-button-10" type="submit" name="customer-submit-payment" value="Сообщить о пополнении">
+    </form>
+
+
+
+<div class="leadok-section">
+
+    {% if info.get('payments') %}
+
+    <p style="padding-top: 0;">{{ info['payments'] | length }} платежей показано</p>
+
+    <table class="ld-table">
+        <tr class="ld-table-header">
+            <td>Статус</td>
+            <td>Дата</td>
+            <td>Сумма</td>
+            <td>Способ</td>
+            <td>Подробности</td>
+        </tr>
+        {% for payment in info['payments'] %}
+        <tr class="ld-table-row">
+            <td style="text-align: center;">
+            {% if payment.status == 'accepted' %}
+            <span style="color: green; font-size: 150%;">&#x2713;</span>
+            {% elif payment.status == 'rejected' %}
+            <span style="color: red; font-size: 150%;">&#x2717;</span>
+            {% endif %}
+            </td>
+
+
+            <td>{{ payment.date.to(g.TZ).format('DD.MM.YYYY HH:mm') }}</td>
+            <td class="number">{{ g.pretty_currency(payment.amount, '0.00') }}</td>
+            <td>{{ payment.method }}</td>
+
+            <td>{{ payment.comment }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+{% else %}
+    <p>Нет платежей за выбранный период.</p>
+{% endif %}
+
+</div>
+
+</div>
+
+{% endblock %}

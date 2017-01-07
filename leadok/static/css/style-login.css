@@ -1,0 +1,61 @@
+a, abbr, acronym, address, applet, article, aside, audio, b, blockquote, big, body, center, canvas, caption, cite, code, command, datalist, dd, del, details, dfn, dl, div, dt, em, embed, fieldset, figcaption, figure, font, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, keygen, label, legend, li, meter, nav, object, ol, output, p, pre, progress, q, s, samp, section, small, span, source, strike, strong, sub, sup, table, tbody, tfoot, thead, th, tr, tdvideo, tt, u, ul, var{background:transparent;border:0 none;font-size:100%;margin:0;padding:0;border:0;outline:0;vertical-align:top;}
+ol, ul{list-style: none;}
+blockquote, q{quotes: none;}
+table, table td{padding:0;border:none;border-collapse:collapse;}
+img{vertical-align:top;}
+embed{vertical-align:top;}
+input, button, select{outline:none;}
+html, body{
+	width:100%;
+	height:100%;
+	background-color:#152135;
+}
+#login-form{
+	margin:0 auto;
+	width:287px;
+}
+#top-spacer{
+	width:100%;
+	height:25%;
+}
+#login-logo{
+	margin-bottom:70px;
+	width:100%;
+	font-family: 'Roboto', sans-serif;
+	font-size:60px;
+	font-weight:bold;
+	line-height:60px;
+	color:#FFF;
+	text-align:center;
+}
+.inputbox, .inputbox-submit{
+	font-family:Arial, sans-serif;
+	font-size:15px;
+	line-height:15px;
+}
+.inputbox{
+	margin-bottom:10px;
+	padding:0px 15px;
+	width:287px;
+	height:43px;
+	background-image:url(../images/inputbox.png);
+	background-color:transparent;
+	border:none;
+}
+.inputbox-submit{
+	margin-top:15px;
+	padding:0;
+	width:287px;
+	height:45px;
+	color:#414141;
+	background-image:url(../images/btn-login.png);
+	background-position:center top;
+    text-shadow: 1px 1px 0px #FFCB3D;
+	background-repeat:no-repeat;
+	background-color:transparent;
+	border:none;
+	cursor:pointer;
+}
+.inputbox-submit:hover{
+	background-position:0px -45px;
+}

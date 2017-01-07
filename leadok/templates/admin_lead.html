@@ -1,0 +1,329 @@
+{% set m = 0 %}
+
+{% set lead = data['lead'] %}
+
+{% set title = 'Заявка {}'.format(lead.id) %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+
+<div id="header">
+    <div id="page-header">
+        <h1>Заявка {{ lead.id }}</h1>
+    </div>
+</div>
+
+<div id="content">
+
+<div class="leadok-content">
+
+
+<div class="leadok-section">
+    <h2>Информация о заявке</h2>
+    <table class="customer-form-table">
+
+        <tr>
+            <td>ID:</td>
+            <td id="leadok-lead-id">{{ lead.id }}</td>
+        </tr>
+
+        <tr>
+            <td>ID2:</td>
+            <td>{{ lead.id2 }}</td>
+        </tr>
+
+        <tr>
+            <td>Получатель:</td>
+            <td>{{ lead.winner }}</td>
+        </tr>
+
+        <tr>
+            <td>Цена:</td>
+            <td>{{ lead.price | int }} руб.</td>
+        </tr>
+
+        <tr>
+            <td>Дата:</td>
+            <td>{{ lead.date.to(g.TZ).format('DD.MM.YYYY HH:mm') }}</td>
+        </tr>
+
+        <tr>
+            <td>Источник заявки:</td>
+            <td>{{ lead.source.split('http://')[-1] }}</td>
+        </tr>
+
+        <tr>
+            <td>Группа:</td>
+            <td>{{ lead.domain }}</td>
+        </tr>
+
+        <tr>
+            <td>Имя:</td>
+            <td>
+            {% if lead.name %}
+                {{ lead.name }}
+            {% else %}
+
+            {% endif %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>Телефон:</td>
+            <td>{{ g.pretty_number(lead.phone) }}</td>
+        </tr>
+
+        <tr>
+            <td>Вопрос:</td>
+            <td>
+            {% if lead.question %}
+                {{ lead.question | nl2br }}
+            {% else %}
+
+            {% endif %}
+            </td>
+        </tr>
+
+        <tr>
+            <td>Комментарий:</td>
+            <td>
+            {% if lead.comment %}
+                {{ lead.comment }}
+            {% else %}
+
+            {% endif %}
+            </td>
+        </tr>
+
+        {% set s = lead.status_object %}
+        <tr>
+            <td>Статус:</td>
+            <td> <span class="{{ css_classes.get(s.name, 'lb-prihod') }}"> {{ s.name_rus }} </span> </td>
+        </tr>
+
+
+
+    </table>
+</div>
+
+
+
+<div class="leadok-section">
+    <h2>Заявки с таким же номером телефона</h2>
+    {% set lead_history = data['lead_history'] %}
+    {% if data['duplicates'] %}
+    <table class="ld-table">
+        <tr class="ld-table-header">
+            <td>ID</td>
+            <td>Дата</td>
+            <td>Получатель</td>
+            <td>Статус</td>
+        </tr>
+        {% for line in data['duplicates'] %}
+        <tr class="ld-table-row">
+            <td><a href="{{ url_for('show_admin_lead', n=line.id) }}">{{ line.id }}</a></td>
+            <td>{{ line.date.to(g.TZ).format('DD.MM.YYYY HH:mm') }}</td>
+            <td>{{ line.winner }}</td>
+
+            {% set s = line.status_object %}
+            <td>  <span class="{{ css_classes.get(s.name, 'lb-prihod') }}" style="color: white;"> {{ s.name_rus }} </span>  </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>Заявок с таким же номером телефона не найдено в базе данных.</p>
+    {% endif %}
+</div>
+
+
+<form method="post">
+
+
+<div class="leadok-section">
+    <h2>Работа с браком</h2>
+
+    {% set date1 = lead.date %}
+    {% set date2 = g.arrow.get(lead.brack_report_date) %}
+    {% set dt = date2 - date1 %}
+
+
+    <table class="customer-form-table">
+    <tr>
+        <td>Дата брака:</td>
+        {% if lead.brack_report_date %}
+          <td {% if dt.days >= 1 %} style="color: red;" {% endif %}>
+            {{ date2.to(g.TZ).format('DD.MM.YYYY HH:mm') }} ({{ date2.humanize(date1, locale='ru') }} после получения заявки)
+          </td>
+        {% else %}
+          <td>Недоступно</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <td>Причина брака:</td>
+        <td style="color: red;">
+          {{ lead.commentbrack if lead.commentbrack else '[причина не указана]' }}
+        </td>
+    </tr>
+    <tr>
+        <td>Ответ модератора:</td>
+        <td>
+            <textarea rows="4" cols="60" name="moderator_answer"></textarea>
+        </td>
+    </tr>
+
+
+    </table>
+
+</div>
+
+
+
+
+
+
+<div class="leadok-section">
+    <h2>История действий с заявкой</h2>
+    {% set lead_history = data['lead_history'] %}
+    {% if lead_history %}
+    <table class="ld-table">
+        <tr class="ld-table-header">
+            <td>Действие</td>
+            <td>Дата</td>
+            <td>Комментарий</td>
+        </tr>
+        {% for line in lead_history %}
+        <tr class="ld-table-row">
+            <td>Просмотрена клиентом</td>
+            <td>{{ g.arrow.get(line['date']).to(g.TZ).format('DD.MM.YYYY HH:mm:ss') }}</td>
+            <td>{{ line['comment'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>Заявка не была просмотрена клиентом ни разу</p>
+    {% endif %}
+</div>
+
+
+<div class="leadok-section">
+    <h2>Изменить статус заявки</h2>
+    <table class="customer-form-table">
+        <tr>
+            <td>Статус:</td>
+            <td>
+
+            {% set s = lead.status_object %}
+
+            {% for _s in g.Lead.get_all_statuses() %}
+            <input id="id-st-{{ _s.id }}"
+                   class="leadok-radio"
+                   type="radio"
+                   name="status"
+                   value="{{ _s.id }}"
+                   {% if s.id == _s.id %} checked {% endif %}>
+            <label for="id-st-{{ _s.id }}" class="leadok-radio-label">{{ _s.name_rus }}</label><br>
+            {% endfor %}
+
+            </td>
+
+
+
+        </tr>
+
+
+
+    </table>
+</div>
+
+
+
+
+<div class="leadok-section">
+    <h2>Качество заявки</h2>
+    <table class="customer-form-table">
+        <tr>
+            <td>Качество заявки:</td>
+            <td>
+
+            {% set q = lead.quality %}
+            {% set qs = lead.get_all_qualities() %}
+
+            {% for _q in lead.get_all_qualities() %}
+            <input id="id-q-{{ _q.name }}"
+                   class="leadok-radio"
+                   type="radio"
+                   name="quality_name"
+                   value="{{ _q.name }}"
+                   {% if q.name == _q.name %} checked {% endif %}>
+            <label for="id-q-{{ _q.name }}" class="leadok-radio-label">{{ _q.name_rus }}</label><br>
+            {% endfor %}
+
+            </td>
+
+        </tr>
+
+        <tr>
+            <td><button type="submit" class="leadok-button" name="submit">Сохранить</button></td> <td></td>
+        </tr>
+
+    </table>
+</div>
+
+
+
+
+
+</form>
+
+
+
+{% if lead.source == 'Георгий Цеквава' and lead.is_brack() and lead.winner != 'test' %}
+<div class="leadok-section">
+<h2>Уведомление Георгию о браке (по почте)</h2>
+</div>
+
+<table class="leadok-form-table">
+<tr>
+    <td>Статус:</td>
+    {% if lead.giga_brack_notification == None %}
+    <td style="color: red;"><div id="leadok-giga-notify-status-text">Уведомление не отправлено.</div></td>
+    {% else %}
+    <td style="color: green;"><div id="leadok-giga-notify-status-text">Уведомление отправлено.</div></td>
+    {% endif %}
+</tr>
+<tr>
+{% if lead.giga_brack_notification == None %}
+{% set _text = 'БРАК: ' + lead.commentbrack %}
+{% else %}
+{% set _text = lead.giga_brack_notification %}
+{% endif %}
+
+    <td>Уведомление:</td>
+    <td>
+        <input type="text" id="leadok-giga-notify-textarea" class="leadok-input-text" name="notification_text_for_giga" value="{{ _text }}" {% if lead.giga_brack_notification != None %} disabled="true" {% endif %}>
+    </td>
+    </tr>
+{% if lead.giga_brack_notification == None %}
+<tr>
+    <td></td>
+    <td>
+    <div class="leadok-button-wrapper" style="width: 100%; margin-right: auto; margin-left: 0;">
+    <button id="leadok-giga-notify-button" class="leadok-button-small">Отправить уведомление Георгию на почту</button>
+    </div>
+    </td>
+</tr>
+{% endif %}
+</table>
+
+{% endif %}
+
+
+
+</div>
+</div>
+
+{% endblock %}

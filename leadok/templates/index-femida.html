@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="format-detection" content="telephone=no">
+	<title>Femida - Главная</title>
+	<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='femida-favicon.ico') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='femida-css/style.css') }}" />
+</head>
+<body>
+
+
+<!-- BEGIN BODY -->
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter29987599 = new Ya.Metrika({id:29987599,
+                    webvisor:true,
+                    clickmap:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/29987599" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+	<div id="wrapper">
+<!-- BEGIN HEADER -->
+
+		<header class="l-header">
+			<div class="headerTop">
+				<div class="inner">
+					<a href="#" class="header_logo"><img src="{{ url_for('static', filename='femida-img/main_logo.png') }}" width="173" height="46" alt=""></a>
+					<div class="header_phone">
+						<p class="phone">8 (495) 125-39-75</p>
+						<p>c 7:00 до 24:00 ежедневно</p>
+					</div>
+					<div class="headerText">
+						<p>Помощь юриста и адвоката <br>по любым правовым вопросам</p>
+					</div>
+				</div>
+			</div>
+			<div class="menu">
+				<div class="inner">
+					<ul class="navBar">
+						<li class="first"><a href="#aboutUs">О Центре</a></li>
+						<li><a href="#ourSpecialists">Наши специалисты</a></li>
+						<li><a href="#whyFree">Почему бесплатно</a></li>
+						<li><a href="#privilege">Преимущества</a></li>
+						<li class="last"><a href="#contacts">Контакты</a></li>
+					</ul>
+				</div>
+			</div>
+		</header>
+
+<!-- HEADER EOF   -->
+<!-- BEGIN CONTENT -->
+
+		<div id="main">
+			<div class="boxInfo1" style="background:url({{ url_for('static', filename='femida-img/bg_1.jpg') }}) no-repeat center top;">
+				<div class="inner">
+					<h1>Бесплатная юридическая помощь</h1>
+					<p>для жителей г.Москвы и МО</p>
+					<div class="boxForm">
+						<h3>ЗАДАЙТЕ ВОПРОС ЮРИСТУ</h3>
+						<p>ответим в течение 15 минут</p>
+						<form id="feedback1" method="post">
+							<div class="fieldInput"><input type="text" name="name" placeholder="Имя*"></div>
+							<div class="fieldInput"><input type="text" name="phone" placeholder="Телефон*"></div>
+							<div class="fieldInput"><textarea name="textarea" cols="1" rows="1" placeholder="Кратко опишите проблему"></textarea></div>
+							<input class="button1" type="submit" value="Получить бесплатную консультацию">
+						</form>
+					</div>
+					<p class="name">Фоминых Александр Борисович<br>Адвокат Московской Городской Коллегии адвокатов</p>
+				</div>
+			</div>
+			<div class="inner">
+				<div class="boxAboutUs">
+					<div class="linkScrolling" id="aboutUs"></div>
+					<h2>О Центре</h2>
+					<p class="indent">В нашем Центре Юридической Помощи работают квалифицированные юристы и адвокаты с серьезным стажем, которые всегда с готовностью рады Вас проконсультировать. Мы помогаем физическим и юридическим лицам отстаивать свои законные права с 2006 года. К настоящему моменту в Центр за бесплатной консультацией обратились более 280 000 жителей Москвы и Московской области. В нашей организации постоянно работают и консультируют семьдесят четыре профессиональных юриста — специалисты со значительным опытом в различных областях права.</p>
+					<p>Чтобы задать вопрос одному из наших юристов, пожалуйста, внимательно заполните все поля и отправьте заявку, нажав на соответствующую кнопку. Мы полностью гарантируем неразглашение введенной Вами информации и обеспечиваем полную анонимность оказываемых консультаций.</p>
+					<p>Кроме бесплатных консультаций, даваемых по телефону, юристы нашего Центра также на платной основе помогают защищать интересы клиентов — физических и юридических лиц — в судах. Оказывается весь спектр сопутствующих услуг: составление исковых заявлений, договоров, жалоб. Юристы берутся за Ваше дело и ведут его до победного конца.</p>
+				</div>
+				<div class="boxOurSpecialists">
+					<div class="linkScrolling" id="ourSpecialists"></div>
+					<h2>Наши лучшие специалисты</h2>
+					<ul>
+						<li>
+							<span class="photo"><img src="{{ url_for('static', filename='femida-img/photo_1.jpg') }}" width="260" height="320" alt=""></span>
+							<div class="info">
+								<p class="name">Жеглов <br>Лев Федорович</p>
+								<p class="specialty">Адвокат Московской Городской Коллегии адвокатов</p>
+								<p>Досудебные споры, страховые дела, арбитраж, помощь <br>при ДТП</p>
+								<div class="boxBtn"><a href="#window" class="button1 opt2 modal">Бесплатная консультация</a></div>
+							</div>
+						</li>
+						<li>
+							<span class="photo"><img src="{{ url_for('static', filename='femida-img/photo_2.jpg') }}" width="260" height="320" alt=""></span>
+							<div class="info">
+								<p class="name">Куприянов <br>Анатолий Владимирович</p>
+								<p class="specialty">Адвокат Московской Городской Коллегии адвокатов</p>
+								<p>Наследство, взыскание долгов, административные дела, недвижимость</p>
+								<div class="boxBtn"><a href="#window" class="button1 opt2 modal">Бесплатная консультация</a></div>
+							</div>
+						</li>
+						<li>
+							<span class="photo"><img src="{{ url_for('static', filename='femida-img/photo_3.jpg') }}" width="260" height="320" alt=""></span>
+							<div class="info">
+								<p class="name">Фоминых <br>Александр Борисович</p>
+								<p class="specialty">Адвокат Московской Городской Коллегии адвокатов</p>
+								<p>Семейные споры, жилищные споры, гражданские дела, трудовые споры</p>
+								<div class="boxBtn"><a href="#window" class="button1 opt2 modal">Бесплатная консультация</a></div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="boxWhyFree">
+					<div class="linkScrolling" id="whyFree"></div>
+					<h2>Почему бесплатно</h2>
+					<p class="indent">Бесплатные юридические консультации по телефону не являются чем-то новым в сфере услуг. Такие консультации практикуются российскими и западными юридическими компаниями уже давно, и на сегодняшний день это достаточно популярный способ получения правовой помощи.</p>
+					<p>Пользуясь такими консультациями, граждане получают взвешенные и развернутые ответы на свои вопросы от профессионалов, разбирающихся во всех нюансах юридического ремесла.</p>
+					<p>Работа по схеме консультаций по телефону осуществляется в соответствии с Федеральным законом от 21.11.2011 N 324-ФЗ «О бесплатной юридической помощи в Российской Федерации» и Государственной Программой Юридической поддержки населения.</p>
+				</div>
+			</div>
+			<div class="boxPrivilege">
+				<div class="linkScrolling" id="privilege"></div>
+				<div class="inner">
+					<h2>Наши преимущества</h2>
+					<div class="boxLeft">
+						<p class="name">Широкая специализация</p>
+						<p>Мы не занимаемся всем подряд, а специализируемся лишь на жилищном праве, поэтому качество наших услуг существенно выше, чем у юридических фирм и адвокатов "широкого профиля".</p>
+						<p class="name">Стопроцентная гарантия результата</p>
+						<p>Наш юрист берется за Ваше дело только если он убежден в его положительном исходе.</p>
+						<p class="name">Значительный стаж работы</p>
+						<p>Наш Центр в целом и каждый специалист в частности обладает существенным опытом в разрешении различного рода правовых вопросов.</p>
+						<p class="name">Удобное расположение в центре</p>
+						<p>Головной офис Центра расположен в семи минутах пешком от станции метро Добрынинская.</p>
+					</div>
+					<div class="boxForm">
+						<h3>ЗАДАЙТЕ ВОПРОС ЮРИСТУ</h3>
+						<p>ответим в течение 15 минут</p>
+						<form id="feedback2"  method="post">
+							<div class="fieldInput"><input type="text" name="name" placeholder="Имя*"></div>
+							<div class="fieldInput"><input type="text" name="phone" placeholder="Телефон*"></div>
+							<div class="fieldInput"><textarea name="textarea" cols="1" rows="1" placeholder="Кратко опишите проблему"></textarea></div>
+							<input class="button1" type="submit" value="Получить бесплатную консультацию">
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="inner">
+				<div class="boxContacts">
+					<div class="linkScrolling" id="contacts"></div>
+					<h2>Контакты</h2>
+					<p><span>Центральное отделение:</span> м. Добрынинская, ул. Большая Ордынка, д. 68</p>
+					<p><span>Режим работы офисов:</span> с 6:00 до 22:00 ежедневно, по предварительной записи</p>
+					<p><span>Горячая линия:</span> 8 (495) 125-39-75</p>
+				</div>
+				<div class="boxQuestions">
+					<h2>Остались вопросы?</h2>
+					<p>Оставьте заявку на бесплатную консультацию <br>— перезвоним в течение 15 минут <br>и решим вашу проблему!</p>
+					<div class="boxForm">
+						<h3>ОСТАВЬТЕ ЗАЯВКУ</h3>
+						<p>ответим в течение 15 минут</p>
+						<form id="feedback3"  method="post">
+							<div class="fieldInput"><input type="text" name="name" placeholder="Имя*"></div>
+							<div class="fieldInput"><input type="text" name="phone" placeholder="Телефон*"></div>
+							<input class="button1" type="submit" value="Получить бесплатную консультацию">
+						</form>
+					</div>
+					<p class="hotline">Или звоните на горячую линию<span>8 (495) 125-39-75</span></p>
+				</div>
+			</div>
+		</div>
+
+<!-- CONTENT EOF   -->
+	</div>
+
+	<div class="mask"></div>
+	<div class="windowOpen" id="window">
+		<div class="boxForm">
+			<div class="closeWindow"></div>
+			<h3>ОСТАВЬТЕ ЗАЯВКУ</h3>
+			<p>ответим в течение 15 минут</p>
+			<form id="feedback4" method="post">
+				<div class="fieldInput"><input type="text" name="name" placeholder="Имя*"></div>
+				<div class="fieldInput"><input type="text" name="phone" placeholder="Телефон*"></div>
+				<input class="button1" type="submit" value="Получить бесплатную консультацию">
+			</form>
+		</div>
+	</div>
+
+ 	<script type="text/javascript" src="{{ url_for('static', filename='femida-js/jquery-1.11.0.min.js') }}"></script>
+ 	<script type="text/javascript" src="{{ url_for('static', filename='femida-js/jquery-migrate.min.js') }}"></script>
+ 	<script type="text/javascript" src="{{ url_for('static', filename='femida-js/jquery.inputmask.js') }}"></script>
+ 	<script type="text/javascript" src="{{ url_for('static', filename='femida-js/scripts.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+{% set m = 3 %}
+
+{% set title = 'Отправить заявку' %}
+
+{% extends "base_simplified.html" %}
+
+{% block content %}
+
+
+<div id="header">
+    <div id="page-header">
+
+        <h1>Отправить заявку</h1>
+
+    </div>
+</div>
+
+
+<div id="content">
+
+<div class="leadok-content">
+
+    <form method="post">
+        <table class="leadok-form-table">
+
+
+        <tr>
+          <td>Имя клиента:</td>
+          <td>
+             <input class="leadok-input-text" type="text" name="name" value="">
+          </td>
+        </tr>
+
+
+        <tr>
+          <td>Телефон:</td>
+          <td>
+             <input class="leadok-input-text" type="text" name="phone" value="">
+          </td>
+        </tr>
+
+
+        <tr>
+          <td class="leadok-td-top">Вопрос:</td>
+          <td>
+              <textarea class="leadok-textarea" name="question"></textarea>
+          </td>
+        </tr>
+
+
+
+
+
+
+        <tr>
+          <td><button type="submit" class="leadok-button" name="submit">Отправить</button></td>
+          <td>
+          </td>
+        </tr>
+
+
+
+        </table>
+
+
+    </form>
+
+
+</div>
+
+</div>
+
+
+
+
+{% endblock %}

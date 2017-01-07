@@ -1,0 +1,113 @@
+{% set m = 6 %}
+
+{% extends "base.html" %}
+
+{% set title = 'Платежи' %}
+
+{% block content %}
+
+{% set uid = info['uid'] %}
+
+<div id="header">
+
+    <div id="page-header">
+        <h1>Платежи — {{ g.MONTHS[info['month']] }} {{ info['year'] }} — {% if uid in ['__everyone__', None] %} Все клиенты {% else %} {{ uid }} {% endif %}</h1>
+    </div>
+
+    <div id="filter-pay">
+        <div id="filter-pay-left">
+            <form method="get">
+            <table class="filter-pay">
+                <tr>
+                    <td class="col-1">Период:</td>
+                    <td>
+                        <select name="month" class="select-status">
+                            {% for month in g.MONTHS %}
+                            <option  {% if month == info['month'] %}selected="selected"{% endif %} value="{{ month }}">{{ g.MONTHS[month] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="col-2">&nbsp;</td>
+                    <td>
+                        <select name="year" class="select-status">
+                            {% for year in g.YEARS %}
+                            <option {% if year == info['year'] %}selected="selected"{% endif %} value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="col-2">&nbsp;</td>
+                    <td class="col-1">Клиент:</td>
+                    <td>
+                        <select name="uid" class="select-status">
+                        <option {% if info['uid'] in ['__everyone__', None] %}selected="selected"{% endif %} value="__everyone__">Все</option>
+                        {% for uid in g.CUSTOMERS %}
+                            <option {% if uid == info['uid'] %}selected="selected"{% endif %} value="{{ uid }}">{{ uid }}</option>
+                        {% endfor %}
+                        </select>
+                    </td>
+                    <td><input class="submit-filter-pay" type="submit" name="submit" value="Показать"></td>
+                </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<div id="content">
+
+<div class="leadok-section">
+
+    <p style="padding-top: 0;"><a href="{{ url_for('admin_pay') }}">Добавить платёж</a></p>
+
+    {% if info.get('payments') %}
+
+    <p style="padding-top: 0;">{{ info['payments'] | length }} платежей показано</p>
+
+    <table class="ld-table">
+        <tr class="ld-table-header">
+            <td>Статус</td>
+            <td>ID</td>
+            <td>UID</td>
+            <td>Дата</td>
+            <td>Сумма</td>
+            <td>Способ</td>
+            <td>Подробности</td>
+        </tr>
+        {% for payment in info['payments'] %}
+        <tr class="ld-table-row">
+            <td style="text-align: center;">
+            {% if payment.status == 'accepted' %}
+            <span style="color: green; font-size: 150%;">&#x2713;</span>
+            {% elif payment.status == 'rejected' %}
+            <span style="color: red; font-size: 150%;">&#x2717;</span>
+            {% endif %}
+            </td>
+
+            <td><a href="{{ url_for('show_payment', payment_id=payment.id) }}">{{ payment.id }}</a></td>
+
+            <td>{{ payment.uid }}</td>
+            <td>{{ payment.date.to(g.TZ).format('DD.MM.YYYY HH:mm') }}</td>
+            <td class="number">{{ g.pretty_currency(payment.amount, '0.00') }}</td>
+            <td>{{ payment.method }}</td>
+
+            <td>{{ payment.comment }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p>Платежи на карту Сбербанка: <b>{{ g.pretty_currency(info['sum_sberbank'], '0.') }}</b> руб.</p>
+    <p>Платежи на Яндекс.Деньги: <b>{{ g.pretty_currency(info['sum_yandex'], '0.') }}</b> руб.</p>
+
+{% else %}
+    <p>Нет платежей за выбранный период.</p>
+{% endif %}
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% set m = 18 %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="header">
+    <div id="page-header">
+        <h1>Яндекс.Директ — Кампания «{{ info['Name'] }}» ({{ info['CampaignID'] }})</h1>
+    </div>
+</div>
+
+<div id="content">
+
+    {% if info['data'] %}
+
+    <p style="margin-bottom: 10px;">Показаны только объявления, не вошедшие в СР.</p>
+
+    <table class="content-tbl-stat">
+        <tr class="content-tbl-stat-header">
+            <td>ID объявления</td>
+            <td>Фраза</td>
+            <td>Идут показы</td>
+            <td>Вход в СР</td>
+        </tr>
+        {% for item in info['data'] %}
+        <tr>
+            <td>{{ item['BannerID'] }}</td>
+            <td>{{ item['Phrase'] }}</td>
+            <td align="center">{% if item['IsActive'] %} да {% endif %}</td>
+            <td align="right">{{ item['PremiumMin'] | round(1) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% else %}
+    <p>Информация недоступна. Причину ошибки смотреть в лог-файле.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

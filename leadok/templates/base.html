@@ -1,0 +1,127 @@
+
+
+
+{% set css_classes = {
+    'new': 'lb-new',
+    'brack_pending': 'lb-ozhidaet',
+    'brack_accepted': 'lb-otklonen',
+    'processed': 'lb-obrabotana',
+} %}
+
+
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Cache-control" content="public">
+<meta name="format-detection" content="telephone=no">
+<meta charset="utf-8">
+{% if title %}
+<title>{{ title }}</title>
+{% else %}
+<title>Лидок – клиенты для бизнеса</title>
+{% endif %}
+<link href='http://fonts.googleapis.com/css?family=Roboto:500,900,100,300,700,400' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700&subset=latin,cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
+<script src="{{ url_for('static', filename='js/jquery-1.11.2.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script_new.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_leadok.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/datepick.css') }}">
+<link rel="shortcut icon" type="image/x-icon" href="http://leadok.ru/static/images/favicon.ico" />
+</head>
+<body>
+	<div id="wrapper">
+
+    	<!--  ЛЕВАЯ КОЛОНКА  -->
+    	<div id="sidebar" class="col">
+
+          <a id="logo" href="{{ url_for('index') }}">LEAD<span style="color:#f39f19">OK</span></a> <!--  ЛОГОТИП  -->
+
+            <div class="left-spacer"></div>
+
+            <div id="menu"> <!--  МЕНЮ. Активному пункту меню для элемента <li> добавляем класс 'active'  -->
+            	<ul>
+                    {% if g.user.is_admin() %}
+
+                	<li class="li-order {% if m == 0 %} active {% endif %}"><a href="{{ url_for('show_admin_leads') }}">Заявки<span id="lead-alert" hidden style="margin-left:75px;background-color: #FF0000;color: #fff;font-size:10px;padding: 3px 6px 3px 5px;border-radius: 15px;text-shadow: 1px 1px #A60000;">42</span></a></li>
+
+                    <li class="li-brack {% if m == 9%} active {% endif %}"><a href="{{ url_for('show_leads_brack') }}">Ожидают брака</a></li>
+
+                    <li class="li-newlead {% if m == 3%} active {% endif %}"><a href="{{ url_for('admin_send_lead') }}">Отправить заявку</a></li>
+
+                    <li class="li-client {% if m == 5%} active {% endif %}"><a href="{{ url_for('admin_customers_info') }}">Клиенты</a></li>
+
+
+                    <li class="li-pay {% if m == 6%} active {% endif %}">
+                    {% if g.user.is_admin() %}
+                    <a href="{{ url_for('show_admin_payments') }}">
+                    {% else %}
+                    <a href="{{ url_for('show_payments') }}">
+                    {% endif %}
+                    Платежи
+                    </a>
+                    </li>
+
+
+
+                    <li class="li-ya {% if m == 18%} active {% endif %}"><a href="{{ url_for('admin_direct') }}">Яндекс.Директ</a></li>
+
+
+
+
+
+                    <li class="li-stat {% if m == 773 %} active {% endif %}"><a href="{{ url_for('admin_show_reports') }}">Отчёты</a></li>
+
+                    <li class="li-log {% if m == 8%} active {% endif %}"><a href="{{ url_for('show_log') }}">Лог-файл</a></li>
+
+                    <li class="li-settings {% if m == 999 %} active {% endif %}"><a href="{{ url_for('show_admin_settings') }}">Настройки</a></li>
+
+                    <li class="li-exit"><a href="{{ url_for('logout') }}">Выход ({{ g.user.uid }})</a></li>
+
+                    {% else %}
+
+                    <li class="li-order {% if m == 0%} active {% endif %}"><a href="{{ url_for('show_leads') }}">Заявки<span id="lead-alert" style="margin-left:75px;background-color: #FF0000;color: #fff;font-size:10px;padding: 3px 6px 3px 5px;border-radius: 15px;text-shadow: 1px 1px #A60000;">42</span></a></li>
+                    <li class="li-stat {% if m == 1%} active {% endif %}"><a href="{{ url_for('show_stats') }}">Статистика</a></li>
+                    <li class="li-history {% if m == 6%} active {% endif %}"><a href="{{ url_for('show_payments') }}">Платежи</a></li>
+                    <li class="li-settings {% if m == 2%} active {% endif %}"><a href="{{ url_for('show_settings') }}">Настройки</a></li>
+                    <li class="li-exit"><a href="{{ url_for('logout') }}">Выход ({{ g.user.uid }})</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="left-spacer"></div>
+
+            <div id="info">
+                {% if not g.user.is_admin() %}
+
+            	<div>Ваш баланс:</div>
+                {% set balance = g.user.get_balance() %}
+                <div {% if balance < 0 %}style="color: red;"{% endif %}class="left-bold">
+                {{ g.pretty_currency(balance, '0.') }} р.
+                </div>
+                <div>Заявок сегодня:</div>
+                <div class="left-bold">{{ g.TOTAL_NOW }}</div>
+
+                {% else %}
+
+                <div>Заявок сегодня:</div>
+                <div class="left-bold">{{ g.TOTAL_NOW }}</div>
+
+                {% endif %}
+            </div>
+
+        </div>
+        <!--  КОНЕЦ ЛЕВОЙ КОЛОНКИ  -->
+
+        <div id="center" class="col"> <!--  ЦЕНТРАЛЬНЫЙ БЛОК  -->
+        	{% block content %}  {% endblock %}
+            <p hidden id="hidden-counter">0</p>
+        </div><!--  КОНЕЦ ЦЕНТРАЛЬНОГО БЛОКА  -->
+        <div class="clear"></div>
+    </div>
+
+
+<script src="{{ url_for('static', filename='js/leadok-scripts.js') }}"></script>
+</body>
+</html>

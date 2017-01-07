@@ -1,0 +1,80 @@
+{% set m = 18 %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="header">
+    <div id="page-header">
+        <h1>Яндекс.Директ — Кампания {{ campaign.id }}</h1>
+    </div>
+</div>
+
+
+<div id="content">
+
+<div class="leadok-content">
+
+    <form method="post">
+        <table class="leadok-form-table">
+
+        <tr>
+          <td>Кампания:</td>
+          <td>
+            {{ campaign.name }}
+          </td>
+        </tr>
+
+        <tr>
+          <td>ID:</td>
+          <td>
+            {{ campaign.id }} (<a href="{{ url_for('admin_direct_campaign_phrases', campaign_id=campaign.id) }}">Посмотреть фразы</a>)
+          </td>
+        </tr>
+
+        <tr>
+          <td>Идут показы:</td>
+          <td>
+          {% if campaign.on %}
+            Да
+          {% else %}
+            Нет
+          {% endif %}
+          </td>
+        </tr>
+
+        <tr>
+          <td>Автоматическое управление:</td>
+          <td>
+
+          <input id="id-chosen" class="leadok-checkbox" name="chosen" type="checkbox" value="chosen" {% if campaign.chosen %} checked {% endif %}>
+          <label for="id-chosen" class="leadok-checkbox-label"></label>
+
+          </td>
+        </tr>
+
+        <tr>
+          <td>Сфера:</td>
+          <td>
+            <input class="leadok-input-text" type="text" name="domain"
+            value="{% if campaign.domain %}{{ campaign.domain }}{% endif %}">
+          </td>
+        </tr>
+
+        <tr>
+          <td><button type="submit" class="leadok-button" name="submit">Сохранить</button></td>
+          <td>
+          </td>
+        </tr>
+
+        </table>
+
+
+    </form>
+
+</div>
+
+</div>
+
+
+{% endblock %}

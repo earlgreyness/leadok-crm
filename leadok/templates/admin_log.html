@@ -1,0 +1,37 @@
+{% set m = 8 %}
+
+{% extends "base.html" %}
+
+{% set title = 'Лог-файл' %}
+
+{% block content %}
+
+<div id="header">
+    <div id="page-header">
+        <h1>Содержимое лог-файла</h1>
+    </div>
+</div>
+
+<div id="content">
+
+    <style>
+        .log-line {
+            font-family: "Consolas", "Monaco", "Menlo", "Liberation Mono", monospace;
+            font-size: 115%;
+            white-space: pre;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0.2em;
+            padding-bottom: 0.2em;
+        }
+    </style>
+
+    <div>
+        {% for line in lines %}
+        <p class="log-line">{{ line }}</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% set m = 999 %}
+
+{% set title = 'Настройки' %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div id="header">
+    <div id="page-header">
+
+        <h1>Настройки Лидка</h1>
+
+    </div>
+</div>
+
+<div id="content">
+
+<div class="leadok-section">
+
+    <form method="post">
+        <table class="customer-form-table">
+
+
+        {% for setting in settings %}
+
+        {% if setting.present_in_web_interface() %}
+
+        <tr>
+
+        <td>{{ setting.description }}:</td>
+
+        {% set the_id = 'id-' + setting.key %}
+        <td>
+
+        {% if setting.is_yes_no() %}
+        <input id="{{ the_id }}" class="leadok-checkbox" name="{{ setting.key }}"
+        type="checkbox" value="Yes"
+        {% if setting.value == 'Yes' %} checked {% endif %}>
+        <label for="{{ the_id }}" class="leadok-checkbox-label">
+        {% else %}
+        <input class="leadok-input-text" type="text" name="{{ setting.key }}"
+            value="{{ setting.value }}">
+        {% endif %}
+        </td>
+
+        </tr>
+
+        {% endif %}
+
+        {% endfor %}
+
+
+
+        <tr>
+          <td><button type="submit" class="leadok-button" name="submit">Сохранить</button></td>
+          <td>
+          </td>
+        </tr>
+
+
+
+        </table>
+
+
+    </form>
+
+
+</div>
+
+</div>
+
+
+
+
+
+{% endblock %}

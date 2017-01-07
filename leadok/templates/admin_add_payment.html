@@ -1,0 +1,106 @@
+{% set m = 6 %}
+
+{% set title = 'Добавить платёж' %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div id="header">
+    <div id="page-header">
+
+        <h1>Добавить платёж</h1>
+
+    </div>
+</div>
+
+<div id="content">
+
+<div class="leadok-content">
+
+    <form method="post">
+        <table class="leadok-form-table">
+
+
+        <tr>
+          <td>Клиент:</td>
+          <td>
+            <input class="leadok-input-text" type="text" name="uid" value="">
+          </td>
+        </tr>
+
+        <tr>
+          <td>Дата и время:</td>
+          <td>
+          <input class="leadok-input-text" type="text" name="date" value="{{ g.arrow.now(g.TZ).format('DD.MM.YYYY HH:mm') }}">
+          </td>
+        </tr>
+
+
+
+        <tr>
+          <td>Сумма, руб.:</td>
+          <td>
+             <input class="leadok-input-text" type="text" name="sum" value="0">
+          </td>
+        </tr>
+
+
+        <tr>
+          <td>Подробности:</td>
+          <td>
+             <input class="leadok-input-text" type="text" name="comment" value="">
+          </td>
+        </tr>
+
+
+        <tr>
+          <td>Способ:</td>
+          <td>
+
+            <input id="id-yandex" class="leadok-radio" type="radio" name="method" value="Яндекс.Деньги" checked>
+            <label for="id-yandex" class="leadok-radio-label">Яндекс.Деньги</label><br>
+
+            <input id="id-sberbank" class="leadok-radio" type="radio" name="method" value="Сбербанк" >
+            <label for="id-sberbank" class="leadok-radio-label">Сбербанк</label><br>
+
+            <input id="id-cash" class="leadok-radio" type="radio" name="method" value="Наличные" >
+            <label for="id-cash" class="leadok-radio-label">Наличные</label><br>
+
+            <input id="id-leadok-transfer" class="leadok-radio" type="radio" name="method" value="Перевод LEADOK" >
+            <label for="id-leadok-transfer" class="leadok-radio-label">Перевод LEADOK</label><br>
+
+            <input id="id-another" class="leadok-radio" type="radio" name="method" value="Другое" >
+            <label for="id-another" class="leadok-radio-label">Другое</label><br>
+
+          </td>
+        </tr>
+
+
+
+
+
+        <tr>
+          <td><button type="submit" class="leadok-button" name="submit">Добавить</button></td>
+          <td>
+          </td>
+        </tr>
+
+
+
+        </table>
+
+
+    </form>
+
+
+</div>
+
+</div>
+
+
+
+
+
+{% endblock %}

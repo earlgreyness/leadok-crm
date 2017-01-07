@@ -1,0 +1,52 @@
+{% set m = 773 %}
+
+{% set title = 'Отчёты' %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="header">
+    <div id="page-header">
+        <h1>Список отчётов</h1>
+    </div>
+</div>
+
+
+<div id="content">
+
+    <p style="padding-top: 0;">
+    <a href="{{ url_for('admin_income') }}">
+    Расходы и прибыль</a>
+    </p>
+
+    <p style="padding-top: 0;">
+    <a href="{{ url_for('show_domains_summary') }}">
+    Статистика заявок по темам</a>
+    </p>
+
+    <p style="padding-top: 0;">
+    <a href="{{ url_for('admin_show_lead_stats') }}">
+    Статистика заявок по звонкам</a>
+    </p>
+
+    <p style="padding-top: 0;">
+    <a href="{{ url_for('show_admin_stats') }}">
+    Статистика заявок по бракам</a>
+    </p>
+
+    <p style="padding-top: 0;">
+    <a href="{{ url_for('admin_show_phrases_statistics') }}">
+    Статистика заявок по фразам</a>
+    </p>
+
+    <p style="padding-top: 0;">
+    <a href="{{ url_for('admin_show_giga_statistics') }}">
+    Статистика по Георгию</a>
+    </p>
+
+
+
+</div>
+
+{% endblock %}

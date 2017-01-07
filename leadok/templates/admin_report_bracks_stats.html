@@ -1,0 +1,108 @@
+{% set m = 773 %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="header">
+    <div id="page-header">
+        <h1>Отчёт: Статистика заявок по бракам — {{ g.MONTHS.get(info['month'], '') }} {{ info['year'] }} — {{ info['uid'] }}</h1>
+    </div>
+
+    <div id="filter-pay">
+        <div id="filter-pay-left">
+            <form method="get">
+            <table class="filter-pay">
+                <tr>
+                    <td class="col-1">Период:</td>
+                    <td>
+                        <select name="month" class="select-status">
+                            {% for month in g.MONTHS %}
+                            <option  {% if month == info['month'] %}selected="selected"{% endif %} value="{{ month }}">{{ g.MONTHS[month] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="col-2">&nbsp;</td>
+                    <td>
+                        <select name="year" class="select-status">
+                            {% for year in g.YEARS %}
+                            <option {% if year == info['year'] %}selected="selected"{% endif %} value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="col-2">&nbsp;</td>
+                    <td class="col-1">Клиент:</td>
+                    <td>
+                        <select name="uid" class="select-status">
+                        {% for c in g.CUSTOMERS %}
+                            <option {% if c == info['uid'] %}selected="selected"{% endif %} value="{{ c }}">{{ c }}</option>
+                        {% endfor %}
+                        </select>
+                    </td>
+                    <td><input class="submit-filter-pay" type="submit" name="submit" value="Показать"></td>
+                </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="content">
+
+    {% if info %}
+
+    <table class="ld-table">
+
+        <tr class="ld-table-header">
+            <td>Дата</td>
+            <td>Заявки</td>
+            <td>Доля брака</td>
+            <td>Цена заявки</td>
+            <td>Потрачено</td>
+            <td>Чистая цена</td>
+        </tr>
+
+        {% for line in info['lines'] %}
+        <tr class="ld-table-row">
+            <td>{{ g.arrow.get(line['date']).format('DD.MM.YYYY') }}</td>
+
+            <td class="number">{{ line['num_leads'] }}</td>
+
+            <td class="number">{% if line['bracks_percent'] != None %} {{ line['bracks_percent'] | int() }}%  {% endif %}</td>
+
+            <td class="number">
+            {% if line['num_leads'] > 0 %}
+            {{ g.pretty_currency(line['lead_price'], '0.0') }}
+            {% endif %}
+            </td>
+
+            <td class="number">{{ g.pretty_currency(line['total_price'], '0.0') }}</td>
+
+            <td class="number">
+            {{ g.pretty_currency(line['buying_price'], '0.0') }}
+            </td>
+        </tr>
+        {% endfor %}
+
+        <tr class="ld-table-row-avg">
+            <td>Итого:</td>
+            <td class="number">{{ info['leads_total'] }}</td>
+            <td class="number">{% if info['av_lpb'] != None %}{{ info['av_lpb'] | int }}% {% endif %}</td>
+            <td class="number"></td>
+            <td class="number">{{ g.pretty_currency(info['total_total_price'], '0.0') }}</td>
+            <td class="number">
+            {{ g.pretty_currency(info['avg_buying_price'], '0.0') }}
+            </td>
+        </tr>
+
+    </table>
+
+    {% else %}
+    <p>Информация недоступна.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

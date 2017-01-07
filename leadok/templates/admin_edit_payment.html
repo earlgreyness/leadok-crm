@@ -1,0 +1,138 @@
+{% set m = 6 %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+{% if payment == None %}
+<div id="header">
+    <div id="page-header">
+
+        <h1>Платеж не найден в базе данных</h1>
+
+    </div>
+</div>
+{% else %}
+<div id="header">
+    <div id="page-header">
+
+        <h1>Редактирование платежа {{ payment.id }}</h1>
+
+    </div>
+</div>
+
+<div id="content">
+
+<div class="leadok-content">
+
+    <form method="post">
+        <table class="leadok-form-table">
+
+
+        <tr>
+          <td>Клиент:</td>
+          <td>
+            {{ payment.uid }}
+          </td>
+        </tr>
+
+        <tr>
+          <td>Дата и время:</td>
+          <td>
+            {{ payment.date.to(g.TZ).format('DD.MM.YYYY HH:mm') }}
+          </td>
+        </tr>
+
+        <tr>
+          <td>Сумма, руб.:</td>
+          <td>
+            {{ g.pretty_currency(payment.amount, '0') }}
+          </td>
+        </tr>
+
+
+        <tr>
+          <td>Подробности:</td>
+          <td>
+            <input class="leadok-input-text" type="text" name="comment"
+            value="{{ payment.comment }}">
+          </td>
+        </tr>
+
+
+        {% set me = payment.method %}
+        {% set ya = 'Яндекс.Деньги' %}
+        {% set sb = 'Сбербанк' %}
+        {% set na = 'Наличные' %}
+        {% set le = 'Перевод LEADOK' %}
+        {% set an = 'Другое' %}
+
+
+        <tr>
+          <td>Способ:</td>
+          <td>
+
+            <input id="id-yandex" class="leadok-radio" type="radio" name="method" value="{{ ya }}" {% if me == ya %} checked {% endif %}>
+            <label for="id-yandex" class="leadok-radio-label">{{ ya }}</label><br>
+
+            <input id="id-sberbank" class="leadok-radio" type="radio" name="method" value="{{ sb }}" {% if me == sb %} checked {% endif %}>
+            <label for="id-sberbank" class="leadok-radio-label">{{ sb }}</label><br>
+
+            <input id="id-cash" class="leadok-radio" type="radio" name="method" value="{{ na }}" {% if me == na %} checked {% endif %}>
+            <label for="id-cash" class="leadok-radio-label">{{ na }}</label><br>
+
+            <input id="id-leadok-transfer" class="leadok-radio" type="radio" name="method" value="{{ le }}" {% if me == le %} checked {% endif %}>
+            <label for="id-leadok-transfer" class="leadok-radio-label">{{ le }}</label><br>
+
+            <input id="id-another" class="leadok-radio" type="radio" name="method" value="{{ an }}" {% if me == an %} checked {% endif %}>
+            <label for="id-another" class="leadok-radio-label">{{ an }}</label><br>
+
+          </td>
+        </tr>
+
+
+
+
+
+        <tr>
+          <td>Статус:</td>
+          <td>
+
+          {% set p = payment.status %}
+
+            <input id="id-pending" class="leadok-radio" type="radio" name="status" value="pending" {%if p=='pending'%}checked{%endif%}>
+            <label for="id-pending" class="leadok-radio-label">Проверяется</label><br>
+
+            <input id="id-accepted" class="leadok-radio" type="radio" name="status" value="accepted" {%if p=='accepted'%}checked{%endif%}>
+            <label for="id-accepted" class="leadok-radio-label">Подтверждён</label><br>
+
+            <input id="id-rejected" class="leadok-radio" type="radio" name="status" value="rejected" {%if p=='rejected'%}checked{%endif%}>
+            <label for="id-rejected" class="leadok-radio-label">Отклонён</label><br>
+
+
+          </td>
+        </tr>
+
+
+        <tr>
+          <td><button type="submit" class="leadok-button" name="submit">Сохранить</button></td>
+          <td>
+          </td>
+        </tr>
+
+
+
+        </table>
+
+
+    </form>
+
+
+</div>
+
+</div>
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,134 @@
+{% set m = 773 %}
+
+{% set title = 'Расходы и прибыль' %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div id="header">
+    <div id="page-header">
+        <h1>Отчёт: Расходы и прибыль</h1>
+    </div>
+
+    <div id="filter-pay">
+        <div id="filter-pay-left">
+            <form method="get">
+            <table class="filter-pay">
+                <tr>
+                    <td class="col-1">Период:</td>
+                    <td>
+                        <select name="month" class="select-status">
+                            {% for month in g.MONTHS %}
+                            <option  {% if month == data['month'] %}selected="selected"{% endif %} value="{{ month }}">{{ g.MONTHS[month] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="col-2">&nbsp;</td>
+                    <td>
+                        <select name="year" class="select-status">
+                            {% for year in g.YEARS %}
+                            <option {% if year == data['year'] %}selected="selected"{% endif %} value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input class="submit-filter-pay" type="submit" name="submit" value="Показать"></td>
+                </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="content">
+
+    <p style="padding-top: 0;"><a href="{{ url_for('admin_add_cost') }}">Добавить статью расходов</a></p>
+
+    {% if data['daily_data'] %}
+
+    <table class="ld-table">
+
+        <tr class="ld-table-header">
+            <td>Дата</td>
+            <td>Yandex.Direct</td>
+            <td>Google AdWords</td>
+{#             <td>Георгий</td>
+            <td>WILStream</td> #}
+            <td>Траты</td>
+            <td>Оборот</td>
+            <td>Прибыль</td>
+            <td>Заявок (чистых)</td>
+            <td>Брак</td>
+            <td>Цена заявки (чистая)</td>
+        </tr>
+
+
+        {% for line in data['daily_data'] %}
+        <tr class="ld-table-row">
+            <td>{{ g.arrow.get(line['date']).format('DD.MM.YYYY') }}</td>
+            <td class="number">{{ g.pretty_currency(line['spent_yandex'], '0.') }}</td>
+            <td class="number">{{ g.pretty_currency(line['spent_google'], '0.') }}</td>
+     {#        <td class="number">{{ g.pretty_currency(line['spent_giga'], '0.') }}</td>
+            <td class="number">{{ g.pretty_currency(line['spent_wilstream'], '0.') }}</td> #}
+            <td class="number">{{ g.pretty_currency(line['spent_all'], '0.') }}</td>
+            <td class="number">{{ g.pretty_currency(line['earned'], '0.') }}</td>
+            <td class="number">{{ g.pretty_currency(line['income'], '0.') }}</td>
+            <td class="number">{{ line['leads_clean'] }}</td>
+            <td class="number">{{ g.pretty_currency(line['brack_percent'], '0.0') }}%</td>
+            <td class="number">{{ g.pretty_currency(line['lead_price_clean'], '0.0') }}</td>
+        </tr>
+        {% endfor %}
+        <tr class="ld-table-row-avg">
+            <td>Среднее:</td>
+            <td class="number">{{ g.pretty_currency(data['avg_spent_yandex'], '0.') }}</td>
+            <td class="number">{{ g.pretty_currency(data['avg_spent_google'], '0.') }}</td>
+        {#     <td class="number">{{ g.pretty_currency(data['avg_spent_giga'], '0.') }}</td>
+            <td class="number">{{ g.pretty_currency(data['avg_spent_wilstream'], '0.') }}</td> #}
+            <td class="number">{{ g.pretty_currency(data['avg_spent_all'], '0.') }}</td>
+            <td class="number">{{ g.pretty_currency(data['avg_earned'], '0.') }}</td>
+            <td class="number">{{ g.pretty_currency(data['avg_income'], '0.') }}</td>
+            <td class="number">{{ g.pretty_currency(data['avg_leads_clean'], '0.') }}</td>
+            <td class="number">{{ g.pretty_currency(data['avg_brack_percent'], '0.0') }}%</td>
+            <td class="number"></td>
+        </tr>
+        <tr class="ld-table-row-total">
+            <td>Всего:</td>
+
+            <td class="number">
+                {{ g.pretty_currency(data['total_spent_yandex'], '0.') }}
+            </td>
+            <td class="number">
+                {{ g.pretty_currency(data['total_spent_google'], '0.') }}
+            </td>
+    {#         <td class="number">
+                {{ g.pretty_currency(data['total_spent_giga'], '0.') }}
+            </td>
+            <td class="number">
+                {{ g.pretty_currency(data['total_spent_wilstream'], '0.') }}
+            </td> #}
+            <td class="number">
+                {{ g.pretty_currency(data['total_spent_all'], '0.') }}
+            </td>
+            <td class="number">
+                {{ g.pretty_currency(data['total_earned'], '0.') }}
+            </td>
+            <td class="number">
+                {{ g.pretty_currency(data['total_income'], '0.') }}
+            </td>
+            <td class="number">{{ g.pretty_currency(data['total_leads_clean'], '0.') }}</td>
+            <td class="number"></td>
+            <td class="number"></td>
+        </tr>
+
+    </table>
+
+    {% else %}
+    <p>Информация недоступна.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,135 @@
+{% set m = 0 %}
+
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+
+{% if lead %}
+
+<div id="header">
+    <div id="page-header">
+        <h1>Заявки > Заявка {{ lead.id2 }}</h1>
+    </div>
+</div>
+
+<div id="content">
+    <form method="post" class="customer-form">
+        <table class="customer-form-table">
+            <tr>
+                <td class="first-column space-big" style="padding-top: 0;">Статус:</td>
+                <td class="big-font space-big" style="padding-top: 0;">
+                    <select name="status" class="select-status-in-lead">
+                        {% set status = lead.status_object %}
+
+                        {% if status.is_brack_related() %}
+                            <option value="{{ status.id }}" selected="selected">{{ status.name_rus }}</option>
+                        {% else %}
+                            {% for _s in g.Lead.get_all_statuses() %}
+                                {% if not _s.is_brack_related() %}
+                                    <option value="{{ _s.id }}"
+                                            {% if status.id == _s.id %} selected="selected" {% endif %}>
+                                      {{ _s.name_rus }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="first-column space-big" style="padding-top: 0;">Качество заявки:</td>
+                <td class="big-font space-big" style="padding-top: 0;">
+                    <select name="quality_name" class="select-status-in-lead">
+                        {% set q = lead.quality %}
+                        {% for _q in lead.get_all_qualities() %}
+                        <option value="{{ _q.name }}" {% if q.name == _q.name %} selected="selected" {% endif %}>
+                          {{ _q.name_rus }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+
+            {% if lead.status_object.is_brack_related() %}
+            <tr>
+                <td class="first-column space-big">Причина брака:</td>
+                <td class="big-font space-big" style="color: red;">{{ lead.commentbrack }}</td>
+            </tr>
+            {% endif %}
+
+            <tr>
+                <td class="first-column space-big">Цена:</td>
+                <td class="big-font space-big">{{ lead.price | int }} руб.</td>
+            </tr>
+
+            <tr>
+                <td class="first-column space-big">Дата:</td>
+                <td class="big-font space-big">{{ lead.date.to(g.TZ).format('DD.MM.YYYY HH:mm') }}</td>
+            </tr>
+            <tr>
+                <td class="first-column space-big">Имя:</td>
+                <td class="big-font space-big">{{ lead.name }}</td>
+            </tr>
+            <tr>
+                <td class="first-column space-big">Телефон:</td>
+                <td class="big-font space-big">{{ g.pretty_number(lead.phone) }}</td>
+            </tr>
+
+            <tr>
+                <td class="first-column space-big">Вопрос:</td>
+                <td class="big-font space-big">{{ lead.question }}</td>
+            </tr>
+            <tr>
+                <td class="first-column space-big">Комментарий:</td>
+                <td class="big-font space-big">
+                    <textarea class="textarea" rows="4" cols="60" name="comment" >{{ lead.comment }}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="first-column space-big"></td>
+                <td class="big-font space-big">
+                <button name="lead-submit" class="lead-submit">Сохранить изменения</button>
+                {% if not lead.status_object.is_brack_related() %}
+                <button class="lead-brak">Брак</button>
+                {% endif %}
+                </td>
+            </tr>
+        </table>
+    </form>
+
+                <div id="popup-wrapper">
+                    <div id="popup-container">
+                        <span class="popup-close"></span>
+                        <form method="post">
+                            <table>
+                                <tr><td width="150"><strong>Укажите причину брака:</strong></td><td><textarea class="textarea-prechina" name="brack_reason"></textarea></td></tr>
+                                <tr><td></td><td align="right">
+                                <button name="sumname" class="to-brak-submit">Отправить в брак</button>
+                                </td></tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+</div>
+
+{% else %}
+<div id="header">
+    <div id="page-header">
+        <h1>Заявки > Заявка ?</h1>
+    </div>
+</div>
+
+<div id="content">
+<p>Заявка не найдена в базе данных.</p>
+</div>
+
+{% endif %}
+
+
+{% endblock %}
+

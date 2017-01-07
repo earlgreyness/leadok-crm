@@ -1,0 +1,57 @@
+{% set m = 2 %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div id="header">
+    <div id="page-header">
+        <h1>Настройки</h1>
+    </div>
+</div>
+
+<div id="content">
+
+    <div class="block">
+
+  {% if data['customer'].is_setting_req_allowed() %}
+
+    <form method="post">
+        <table>
+
+
+        <tr>
+          <td class="first-col">Нужно заявок сегодня:</td>
+          <td class="second-col">
+            <input class="leadok-it number" type="text" name="num_leads_required_today" value="{{ data['customer'].get_req(data['day_of_week']) }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td class="first-col">
+
+          </td>
+          <td class="second-col">
+            <input type="submit" class="leadok-button-01" value="Сохранить">
+          </td>
+        </tr>
+
+        </table>
+
+
+    </form>
+
+    {% else %}
+    Недоступно.
+{% endif %}
+
+    </div>
+
+
+
+</div>
+
+{% endblock %}
+
+

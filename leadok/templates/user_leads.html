@@ -1,0 +1,143 @@
+{% set m = 0 %}
+
+{% set title = 'Заявки' %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+{% set _date_from = data['day_from'].strftime('%d.%m.%Y') %}
+{% set _date_till = data['day_till'].strftime('%d.%m.%Y') %}
+{% set _today = g.arrow.now(timezone).date().strftime('%d.%m.%Y') %}
+
+{% if data['statuses'] == None %}
+{% set _status = None %}
+{% else %}
+{% set _status = data['statuses'][0] %}
+{% endif %}
+
+{% set _days = (data['day_till'] - data['day_from']).days + 1 %}
+
+<div id="header">
+
+    <div id="page-header">
+        {% if _date_from == _date_till and _date_from == _today %}
+          <h1>Заявки за сегодня</h1>
+        {% elif _date_from == _date_till %}
+          <h1>Заявки за {{ _date_from }}</h1>
+        {% elif _date_till == _today %}
+          <h1>Заявки с {{ _date_from }} по сегодня (последние {{ _days }} дней)</h1>
+        {% else %}
+          <h1>Заявки за период с {{ _date_from }} по {{ _date_till }} ({{ _days }} дней)</h1>
+        {% endif %}
+    </div>
+
+
+    <div id="filter">
+        <div id="filter-left">
+            <form method="get" id="choose-period-form">
+            <table class="filter">
+                <tr>
+                    <td class="col-1">Период:</td>
+                    <td><input type="text" name="date_from" class="input-date date-from" id="datepicker" value="{{ _date_from }}"></td>
+                    <td class="col-2">&mdash;</td>
+                    <td><input type="text" name="date_till" class="input-date date-to" value="{{ _date_till }}"></td>
+                    <td class="col-3">Статус:</td>
+                    <td>
+                        <select name="status" class="select-status">
+
+                            <option value="__all__" {% if _status == None %}selected="selected"{% endif %}>Все</option>
+
+                            {% for status in g.Lead.get_all_statuses() %}
+                            <option value="{{ status.id }}"
+                                    {% if _status == status.id %} selected="selected" {% endif %}>
+                              {{ status.name_rus }}
+                            </option>
+                            {% endfor %}
+
+                        </select>
+                    </td>
+
+                    <td><input id="choose-period-submit-button" class="submit-filter" type="submit" name="filter_submit" value="Показать"></td>
+                </tr>
+                <tr class="tr-interval">
+                    <td></td>
+                    <td colspan="6">
+                        <a class="a-interval f-today" href="#">Сегодня</a>
+                        <a class="a-interval f-yesterday" href="#">Вчера</a>
+                        <a class="a-interval f-7days" href="#">7 дней</a>
+                        <a class="a-interval f-30days" href="#">30 дней</a>
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+        <!-- <div id="filter-right">
+            <form method="post" action="">
+                <div id="phone-search">
+                    <table>
+                        <tr>
+                            <td><input class="search-number" type="text" placeholder="Поиск телефону" value=""></td>
+                            <td><input type="submit" class="submit-phone-search" value=""></td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+        </div> -->
+    </div>  <!-- КОНЕЦ ФИЛЬТРА -->
+
+
+</div>
+
+
+
+<div id="content">
+
+    {% if data['leads'] %}
+
+    <p class="above-table">Показано {{ data['leads'] | length }} заявок</p>
+
+    <table class="content-tbl">
+    <tr class="content-tbl-header">
+        <td class="fit-content" >ID</td>
+        <td class="fit-content">Дата</td>
+        <td class="fit-content">Телефон</td>
+        <td class="ellipsis col-name">Имя</td>
+        <td class="ellipsis col-question">Вопрос</td>
+        <td class="fit-content">Статус</td>
+        <td class="ellipsis col-comment">Комментарий</td>
+
+    </tr>
+    {% for lead in data['leads'] %}
+    <tr class="order-row">
+
+        <td class="fit-content"><a href="{{ url_for('show_lead', n=lead['id2']) }}">{{ lead['id2'] or '' }}</a></td>
+
+        <td class="fit-content">{{ g.arrow.get(lead['date']).to(timezone).format('DD.MM.YYYY HH:mm') }}</td>
+
+        <td class="fit-content">{{ g.pretty_number(lead['phone']) }}</td>
+
+        <td class="ellipsis col-name">{{ lead['name'] }}</td>
+
+        <td class="ellipsis col-question">{{ lead['question'] }}</td>
+
+        <td class="fit-content">
+          <span class="{{ css_classes.get(lead.status_object.name, 'lb-prihod') }}">
+            {{ lead.status_object.name_rus }}
+          </span>
+        </td>
+
+        <td class="ellipsis col-comment">{{ lead['comment'] if lead['comment'] != None }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+
+    {% else %}
+        <p>Нет заявок за выбранный период с выбранным статусом.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+

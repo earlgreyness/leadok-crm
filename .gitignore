@@ -87,3 +87,14 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Project specific items
+*.conf
+*.wsgi
+scheduled_jobs/
+db_backups/
+apache2_logs/
+logs/
+*.sublime-project
+*.sublime-workspace
+config.py

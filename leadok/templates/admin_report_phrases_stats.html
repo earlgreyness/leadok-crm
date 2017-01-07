@@ -1,0 +1,81 @@
+{% set m = 773 %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div id="header">
+
+    <div id="page-header">
+        <h1>Отчёт: Статистика заявок по фразам</h1>
+    </div>
+
+
+        <div id="filter-pay">
+        <div id="filter-pay-left">
+            <form method="get">
+            <table class="filter-pay">
+                <tr>
+                    <td class="col-1">Сортировать по:</td>
+                    <td>
+                        <select name="sort-crit" class="select-status">
+
+                        <option {% if not data['sort_by_brack_percent'] %}selected="selected"{% endif %} value="sort_by_total">числу заявок
+                        </option>
+
+                        <option {% if data['sort_by_brack_percent'] %}selected="selected"{% endif %} value="sort_by_brack">проценту брака
+                        </option>
+
+
+                        </select>
+                    </td>
+
+                    <td><input class="submit-filter-pay" type="submit" name="submit" value="Показать"></td>
+                </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+
+
+<div id="content">
+
+<div class="leadok-section">
+
+{% if data['phrases'] %}
+
+    <p style="padding-top: 0;">{{ data['phrases'] | length }} фраз показано</p>
+
+    <table class="ld-table">
+        <tr class="ld-table-header">
+            <td>URL</td>
+            <td>Доля брака</td>
+            <td>Всего заявок</td>
+        </tr>
+        {% for item in data['phrases'] %}
+        <tr class="ld-table-row">
+            <td><a href="#">{{ item['url'] }}</a></td>
+            <td align="right">{{ g.pretty_currency(item['brack_percent'], '0') }}%</td>
+            <td>{{ item['total'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% else %}
+    <p>Информация недоступна.</p>
+{% endif %}
+
+</div>
+
+</div>
+
+{% endblock %}

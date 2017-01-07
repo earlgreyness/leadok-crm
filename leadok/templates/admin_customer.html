@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div id="header">
+    <div id="page-header">
+        <h1>Панель управления клиентом {{ customer.uid }}</h1>
+    </div>
+</div>
+
+<div id="content">
+
+<div class="leadok-section">
+
+    <form method="post" class="customer-form">
+        <table class="customer-form-table">
+
+        <tr>
+          <td>UID:</td>
+          <td>
+            {{ customer.uid }}
+          </td>
+        </tr>
+
+
+
+        <tr>
+        {% set status = customer.get_status() %}
+          <td>Статус:</td>
+          <td {% if status %} style="color: red;" {% else %} style="color: green;" {% endif %}>
+            {% if customer.is_strict() and status %}
+              Заявки не поступают<br>
+            {% elif not customer.is_strict() and status %}
+              <div style="color: green;">Заявки поступают (буфер)</div><br>
+            {% else %}
+              Включен, заявки поступают
+            {% endif %}
+            {% if status %}
+              {% for line in status %}
+                {{ line }}<br>
+              {% endfor %}
+            {% endif %}
+          </td>
+        </tr>
+
+
+        <tr>
+            <td>Баланс:</td>
+            <td
+                {% set balance = customer.get_balance() %}
+                {% if balance < 0 %}
+                style="color: red;"
+                {% elif balance > 0 %}
+                style="color: green;"
+                {% endif %}>
+                {{ g.pretty_currency(balance, '0.') }} руб.
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <td>E-mail:</td>
+            <td>{{ customer.email }}</td>
+        </tr>
+
+
+        <tr>
+            <td>Телефон:</td>
+            <td>
+                {{ g.pretty_number(customer.phone) }}
+            </td>
+        </tr>
+
+        <tr>
+            <td>Цена заявки:</td>
+            <td>{{ customer.get_price() | int }} руб.</td>
+        </tr>
+
+
+        <tr>
+            <td>Тематика:</td>
+            <td>{{ customer.get_domain().scope_description }}</td>
+        </tr>
+
+
+        <tr>
+            <td>Регионы:</td>
+            <td>
+            {{ customer.get_domain().region_description }}
+            </td>
+        </tr>
+
+
+
+
+
+        <tr>
+            <td>Примечания:</td>
+            <td>
+                <textarea rows="4" cols="60" name="notes">{{ customer.notes }}</textarea>
+            </td>
+        </tr>
+
+        <tr>
+          <td>Включен:</td>
+          <td>
+          <input id="id-on" class="leadok-checkbox" name="on" type="checkbox" value="on" {% if not customer.is_off() %}checked{%endif%}>
+          <label for="id-on" class="leadok-checkbox-label"></label>
+
+            <!-- <input type="checkbox" name="on" value="on" {% if not customer.is_off() %} checked="checked" {% endif %} > -->
+          </td>
+        </tr>
+
+        <tr>
+          <td>Буферный клиент:</td>
+          <td>
+
+          <input id="id-buffer" class="leadok-checkbox" name="buffer_customer" type="checkbox" value="buffer_customer" {% if not customer.is_strict() %}checked{%endif%}>
+          <label for="id-buffer" class="leadok-checkbox-label"></label>
+
+          </td>
+        </tr>
+
+        <tr>
+          <td>Заявки на почту:</td>
+          <td>
+
+             <input id="id-send-email" class="leadok-checkbox" name="send_email" type="checkbox" value="send_email" {% if customer.email_needed %}checked{%endif%}>
+          <label for="id-send-email" class="leadok-checkbox-label"></label>
+
+
+          </td>
+        </tr>
+
+        <tr>
+          <td>Может задавать кол-во заявок в день:</td>
+          <td>
+
+
+             <input id="id-allow" class="leadok-checkbox" name="allow_to_set_req" type="checkbox" value="allow_to_set_req" {% if customer.is_setting_req_allowed() %}checked{%endif%}>
+          <label for="id-allow" class="leadok-checkbox-label"></label>
+
+
+          </td>
+        </tr>
+
+        <tr>
+          <td>Лимит баланса:</td>
+          <td>
+            <input class="num_leads" type="text" name="balance_limit" value="{{ customer.balance_limit | int }}">
+          </td>
+        </tr>
+
+
+        <tr>
+          <td>Заявки и время, ПН:</td>
+          <td>
+            <input class="num_leads" type="text" name="num_leads_required_mon" value="{{ customer.get_req('monday') }}">
+            <input class="num_leads" type="text" name="working_hours_start_mon"
+                value="{{ customer.get_working_hours('monday')[0].format('HH:mm') }}">
+          —
+            <input class="num_leads" type="text" name="working_hours_finish_mon" value="{{ customer.get_working_hours('monday')[1].format('HH:mm') }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td>Заявки и время, ВТ:</td>
+          <td>
+            <input class="num_leads" type="text" name="num_leads_required_tue" value="{{ customer.get_req('tuesday') }}">
+            <input class="num_leads" type="text" name="working_hours_start_tue" value="{{ customer.get_working_hours('tuesday')[0].format('HH:mm') }}">
+          —
+            <input class="num_leads" type="text" name="working_hours_finish_tue" value="{{ customer.get_working_hours('tuesday')[1].format('HH:mm') }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td>Заявки и время, СР:</td>
+          <td>
+            <input class="num_leads" type="text" name="num_leads_required_wed" value="{{ customer.get_req('wednesday') }}">
+            <input class="num_leads" type="text" name="working_hours_start_wed" value="{{ customer.get_working_hours('wednesday')[0].format('HH:mm') }}">
+          —
+            <input class="num_leads" type="text" name="working_hours_finish_wed" value="{{ customer.get_working_hours('wednesday')[1].format('HH:mm') }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td>Заявки и время, ЧТ:</td>
+          <td>
+            <input class="num_leads" type="text" name="num_leads_required_thu" value="{{ customer.get_req('thursday') }}">
+            <input class="num_leads" type="text" name="working_hours_start_thu" value="{{ customer.get_working_hours('thursday')[0].format('HH:mm') }}">
+          —
+            <input class="num_leads" type="text" name="working_hours_finish_thu" value="{{ customer.get_working_hours('thursday')[1].format('HH:mm') }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td>Заявки и время, ПТ:</td>
+          <td>
+            <input class="num_leads" type="text" name="num_leads_required_fri" value="{{ customer.get_req('friday') }}">
+            <input class="num_leads" type="text" name="working_hours_start_fri" value="{{ customer.get_working_hours('friday')[0].format('HH:mm') }}">
+          —
+            <input class="num_leads" type="text" name="working_hours_finish_fri" value="{{ customer.get_working_hours('friday')[1].format('HH:mm') }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td>Заявки и время, СБ:</td>
+          <td>
+            <input class="num_leads" type="text" name="num_leads_required_sat" value="{{ customer.get_req('saturday') }}">
+            <input class="num_leads" type="text" name="working_hours_start_sat" value="{{ customer.get_working_hours('saturday')[0].format('HH:mm') }}">
+          —
+            <input class="num_leads" type="text" name="working_hours_finish_sat" value="{{ customer.get_working_hours('saturday')[1].format('HH:mm') }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td>Заявки и время, ВС:</td>
+          <td>
+            <input class="num_leads" type="text" name="num_leads_required_sun" value="{{ customer.get_req('sunday') }}">
+            <input class="num_leads" type="text" name="working_hours_start_sun" value="{{ customer.get_working_hours('sunday')[0].format('HH:mm') }}">
+          —
+            <input class="num_leads" type="text" name="working_hours_finish_sun" value="{{ customer.get_working_hours('sunday')[1].format('HH:mm') }}">
+          </td>
+        </tr>
+
+        </table>
+
+        <!-- <input type="submit" class="styled-button-10" name="submit-accept" value="Сохранить"> -->
+        <button type="submit" class="leadok-button" name="submit-accept">Сохранить</button>
+    </form>
+
+  </div>
+
+</div>
+
+{% endblock %}
